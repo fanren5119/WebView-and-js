@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>上传图片</title>
+	<style>
+		.warp{margin:10px;}
+		#preview{
+			max-width: 100%;
+		}
+		.upimg{
+			background:rgb(51,153,255);
+			border-radius:5px;
+			line-height:100px;
+			text-align: center;
+			color:#fff;
+		}
+		.btnUp{
+			height:60px;
+			width:100%;
+			background:rgb(120,218,106);
+			background-image:linear-gradient(to top,rgb(80,193,103),rgb(120,218,106));
+			margin-top:10px;
+			border:0;
+			outline:0;
+			font-size:21px;
+			color:#fff;
+			border-radius:5px;
+		}
+		.btnUp:active{
+			background-image:linear-gradient(to bottom,rgb(80,193,103),rgb(120,218,106));
+			font-size:30px;
+		}
+	</style>
+</head>
+<body>
+<div class="warp">
+	<div class="upimg" onclick="getImage();">上传图片</div>
+	<button class="btnUp" onclick="sendPost();">确认上传</button>
+	<p><img id="preview"></p>
+</div>
+<script>
+var data = '';
+//从原生取数据
+function getImage(){
+    window.iosDelegate.takePhoto('1');
+}
+//iOS回调
+function setImageWithData(dataurl) {
+	var ele = document.getElementById('preview');
+	ele.src = dataurl.image;
+}
+//判断系统
+function isOS(){
+	var u = navigator.userAgent;
+	var flag = '';
+	var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+	var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+	if(isAndroid){
+		flag = 'Android';
+	}else if(isiOS){
+		flag = 'iOS';
+	}else{
+		flag = 'other';
+	}
+	return flag;
+}
+//发数据
+function sendPost(){
+     window.iosDelegate.sendPost({'id': 1, 'message': '数据上传成功'});
+}
+</script>
+</body>
+</html>
